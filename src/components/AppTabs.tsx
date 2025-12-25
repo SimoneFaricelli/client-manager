@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { MainTab } from './MainTab';
 import { ClientsTab } from './ClientsTab';
@@ -32,8 +33,15 @@ export function AppTabs({
   onOpenClientTab,
   onCloseClientTab,
 }: AppTabsProps) {
+  const [activeTab, setActiveTab] = useState('main');
+
+  const handleOpenClientTab = (client: Client) => {
+    onOpenClientTab(client);
+    setActiveTab(`client-${client.id}`);
+  };
+
   return (
-    <Tabs defaultValue="main" className="w-full">
+    <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
       <div className="border-b border-border bg-card/50 backdrop-blur-sm sticky top-0 z-10">
         <div className="max-w-6xl mx-auto px-4">
           <TabsList className="h-12 bg-transparent gap-1 p-0">
@@ -111,7 +119,7 @@ export function AppTabs({
         })}
 
         <TabsContent value="add" className="m-0">
-          <AddClientTab clients={clients} onSelectClient={onOpenClientTab} />
+          <AddClientTab clients={clients} onSelectClient={handleOpenClientTab} />
         </TabsContent>
       </div>
     </Tabs>

@@ -7,6 +7,7 @@ import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Briefcase, Loader2 } from 'lucide-react';
+import { ThemeToggle } from '@/components/ThemeToggle';
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -32,11 +33,14 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background flex items-center justify-center p-4">
-      <Card className="w-full max-w-md">
+    <div className="min-h-screen bg-background flex items-center justify-center p-4 transition-colors duration-300">
+      <div className="absolute top-4 right-4">
+        <ThemeToggle />
+      </div>
+      <Card className="w-full max-w-md transition-colors duration-300">
         <CardHeader className="space-y-4">
           <div className="flex justify-center">
-            <div className="h-12 w-12 rounded-lg bg-primary flex items-center justify-center">
+            <div className="h-12 w-12 rounded-lg bg-primary flex items-center justify-center transition-colors duration-300">
               <Briefcase className="h-6 w-6 text-primary-foreground" />
             </div>
           </div>

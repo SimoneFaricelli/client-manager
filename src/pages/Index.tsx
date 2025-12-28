@@ -4,6 +4,7 @@ import { AppTabs } from '@/components/AppTabs';
 import { Briefcase, LogOut, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useNavigate } from 'react-router-dom';
+import { ThemeToggle } from '@/components/ThemeToggle';
 
 const Index = () => {
   const {
@@ -40,13 +41,13 @@ const Index = () => {
   }
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background transition-colors duration-300">
       {/* Header */}
-      <header className="border-b border-border bg-card">
+      <header className="border-b border-border bg-card transition-colors duration-300">
         <div className="max-w-6xl mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="h-10 w-10 rounded-lg bg-primary flex items-center justify-center">
+              <div className="h-10 w-10 rounded-lg bg-primary flex items-center justify-center transition-colors duration-300">
                 <Briefcase className="h-5 w-5 text-primary-foreground" />
               </div>
               <div>
@@ -58,6 +59,7 @@ const Index = () => {
             </div>
             <div className="flex items-center gap-4">
               <span className="text-sm text-muted-foreground">{user?.email}</span>
+              <ThemeToggle />
               <Button
                 variant="outline"
                 size="sm"

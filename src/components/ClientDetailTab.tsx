@@ -30,6 +30,7 @@ export function ClientDetailTab({ client, entries }: ClientDetailTabProps) {
           minute: '2-digit',
         }),
         Descrizione: entry.description,
+        'Costo (€)': entry.cost.toFixed(2),
       }));
 
       // Crea un nuovo workbook
@@ -40,7 +41,8 @@ export function ClientDetailTab({ client, entries }: ClientDetailTabProps) {
       // Imposta la larghezza delle colonne
       worksheet['!cols'] = [
         { wch: 20 }, // Data
-        { wch: 80 }, // Descrizione
+        { wch: 60 }, // Descrizione
+        { wch: 15 }, // Costo
       ];
 
       // Genera il file e scaricalo
@@ -97,6 +99,7 @@ export function ClientDetailTab({ client, entries }: ClientDetailTabProps) {
               <TableRow className="bg-muted/50">
                 <TableHead className="w-[180px]">Data</TableHead>
                 <TableHead>Descrizione</TableHead>
+                <TableHead className="w-[120px] text-right">Costo</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -112,6 +115,7 @@ export function ClientDetailTab({ client, entries }: ClientDetailTabProps) {
                     })}
                   </TableCell>
                   <TableCell>{entry.description}</TableCell>
+                  <TableCell className="text-right font-medium">€ {entry.cost.toFixed(2)}</TableCell>
                 </TableRow>
               ))}
             </TableBody>

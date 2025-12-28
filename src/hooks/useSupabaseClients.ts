@@ -240,13 +240,13 @@ export function useSupabaseClients() {
   );
 
   const addEntry = useCallback(
-    async (clientId: string, description: string) => {
+    async (clientId: string, description: string, cost: number) => {
       if (!user) return null;
 
       try {
         const { data, error } = await supabase
           .from('entries')
-          .insert([{ client_id: clientId, description, user_id: user.id }])
+          .insert([{ client_id: clientId, description, cost, user_id: user.id }])
           .select()
           .single();
 

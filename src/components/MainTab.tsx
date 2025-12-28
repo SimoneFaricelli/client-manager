@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Client } from '@/types';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
+import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import {
   Select,
@@ -10,17 +11,18 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { Send } from 'lucide-react';
+import { Send, Euro } from 'lucide-react';
 import { toast } from 'sonner';
 
 interface MainTabProps {
   clients: Client[];
-  onSubmit: (clientId: string, description: string) => void;
+  onSubmit: (clientId: string, description: string, cost: number) => void;
 }
 
 export function MainTab({ clients, onSubmit }: MainTabProps) {
   const [selectedClientId, setSelectedClientId] = useState<string>('');
   const [description, setDescription] = useState<string>('');
+  const [cost, setCost] = useState<string>('');
 
   const handleSubmit = () => {
     if (!selectedClientId) {
@@ -31,10 +33,23 @@ export function MainTab({ clients, onSubmit }: MainTabProps) {
       toast.error('Inserisci una descrizione');
       return;
     }
+    if (!cost || isNaN(parseFloat(cost)) || parseFloat(cost) < 0) {
+      toast.error('Inserisci un costo valido');
+      return;
+    }
 
-    onSubmit(selectedClientId, description.trim());
+    onSubmit(selectedClientId, description.trim(), parseFloat(cost));
     setDescription('');
+    setCost('');
     toast.success('Voce aggiunta con successo');
+  };
+
+  const handleCostChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    // Permetti solo numeri e punto decimale
+    if (value === '' || /^\d*\.?\d*$/.test(value)) {
+      setCost(value);
+    }
   };
 
   const selectedClient = clients.find(c => c.id === selectedClientId);
@@ -86,12 +101,32 @@ export function MainTab({ clients, onSubmit }: MainTabProps) {
               className="min-h-[120px] resize-none bg-background"
             />
           </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="cost" className="text-sm font-medium">
+              Costo Prestazione
+            </Label>
+            <div className="relative">
+              <Input
+                id="cost"
+                type="text"
+                inputMode="decimal"
+                placeholder="0.00"
+                value={cost}
+                onChange={handleCostChange}
+                className="pr-10 bg-background"
+              />
+              <div className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground">
+                <Euro className="h-4 w-4" />
+              </div>
+            </div>
+          </div>
         </div>
 
         <Button 
           onClick={handleSubmit}
           className="w-full gap-2"
-          disabled={!selectedClientId || !description.trim()}
+          disabled={!selectedClientId || !description.trim() || !cost}
         >
           <Send className="h-4 w-4" />
           Invia

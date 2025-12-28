@@ -12,7 +12,7 @@ interface AppTabsProps {
   clients: Client[];
   entries: Entry[];
   openClientTabs: ClientTab[];
-  onAddEntry: (clientId: string, description: string) => void;
+  onAddEntry: (clientId: string, description: string, cost: number) => void;
   onAddClient: (name: string) => void;
   onUpdateClient: (id: string, name: string) => void;
   onDeleteClient: (id: string) => void;

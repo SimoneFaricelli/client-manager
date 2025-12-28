@@ -29,9 +29,10 @@ interface ClientsTabProps {
   onAdd: (name: string) => void;
   onUpdate: (id: string, name: string) => void;
   onDelete: (id: string) => void;
+  onOpenClient?: (client: Client) => void;
 }
 
-export function ClientsTab({ clients, onAdd, onUpdate, onDelete }: ClientsTabProps) {
+export function ClientsTab({ clients, onAdd, onUpdate, onDelete, onOpenClient }: ClientsTabProps) {
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
@@ -113,10 +114,13 @@ export function ClientsTab({ clients, onAdd, onUpdate, onDelete }: ClientsTabPro
             clients.map(client => (
               <div
                 key={client.id}
-                className="p-4 flex items-center justify-between hover:bg-muted/50 transition-colors"
+                className="p-4 flex items-center justify-between hover:bg-muted/50 transition-colors group"
               >
-                <div>
-                  <p className="font-medium text-foreground">{client.name}</p>
+                <div 
+                  className="flex-1 cursor-pointer"
+                  onClick={() => onOpenClient?.(client)}
+                >
+                  <p className="font-medium text-foreground group-hover:text-primary transition-colors">{client.name}</p>
                   <p className="text-xs text-muted-foreground">
                     Aggiunto il {new Date(client.created_at).toLocaleDateString('it-IT')}
                   </p>
@@ -125,7 +129,10 @@ export function ClientsTab({ clients, onAdd, onUpdate, onDelete }: ClientsTabPro
                   <Button
                     variant="ghost"
                     size="icon"
-                    onClick={() => openEditDialog(client)}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      openEditDialog(client);
+                    }}
                     className="h-8 w-8 text-muted-foreground hover:text-foreground"
                   >
                     <Pencil className="h-4 w-4" />
@@ -133,7 +140,10 @@ export function ClientsTab({ clients, onAdd, onUpdate, onDelete }: ClientsTabPro
                   <Button
                     variant="ghost"
                     size="icon"
-                    onClick={() => openDeleteDialog(client)}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      openDeleteDialog(client);
+                    }}
                     className="h-8 w-8 text-muted-foreground hover:text-destructive"
                   >
                     <Trash2 className="h-4 w-4" />

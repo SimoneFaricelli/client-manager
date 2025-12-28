@@ -102,6 +102,7 @@ export function AppTabs({
             onAdd={onAddClient}
             onUpdate={onUpdateClient}
             onDelete={onDeleteClient}
+            onOpenClient={handleOpenClientTab}
           />
         </TabsContent>
 

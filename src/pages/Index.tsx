@@ -1,7 +1,7 @@
-import { useAppState } from '@/hooks/useAppState';
+import { useSupabaseClients } from '@/hooks/useSupabaseClients';
 import { useAuth } from '@/hooks/useAuth';
 import { AppTabs } from '@/components/AppTabs';
-import { Briefcase, LogOut } from 'lucide-react';
+import { Briefcase, LogOut, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useNavigate } from 'react-router-dom';
 
@@ -17,7 +17,8 @@ const Index = () => {
     getClientEntries,
     openClientTab,
     closeClientTab,
-  } = useAppState();
+    loading,
+  } = useSupabaseClients();
 
   const { signOut, user } = useAuth();
   const navigate = useNavigate();
@@ -26,6 +27,17 @@ const Index = () => {
     await signOut();
     navigate('/login');
   };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="text-center">
+          <Loader2 className="h-8 w-8 animate-spin mx-auto text-primary" />
+          <p className="mt-4 text-muted-foreground">Caricamento dati...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-background">

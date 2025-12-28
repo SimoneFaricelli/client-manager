@@ -118,7 +118,7 @@ export function ClientsTab({ clients, onAdd, onUpdate, onDelete }: ClientsTabPro
                 <div>
                   <p className="font-medium text-foreground">{client.name}</p>
                   <p className="text-xs text-muted-foreground">
-                    Aggiunto il {client.createdAt.toLocaleDateString('it-IT')}
+                    Aggiunto il {new Date(client.created_at).toLocaleDateString('it-IT')}
                   </p>
                 </div>
                 <div className="flex gap-2">

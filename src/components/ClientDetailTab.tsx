@@ -52,7 +52,7 @@ export function ClientDetailTab({ client, entries }: ClientDetailTabProps) {
               {entries.map(entry => (
                 <TableRow key={entry.id}>
                   <TableCell className="font-medium text-muted-foreground">
-                    {entry.createdAt.toLocaleDateString('it-IT', {
+                    {new Date(entry.created_at).toLocaleDateString('it-IT', {
                       day: '2-digit',
                       month: 'long',
                       year: 'numeric',

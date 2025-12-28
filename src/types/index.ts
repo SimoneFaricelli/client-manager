@@ -1,14 +1,16 @@
 export interface Client {
   id: string;
   name: string;
-  createdAt: Date;
+  user_id: string;
+  created_at: string;
 }
 
 export interface Entry {
   id: string;
-  clientId: string;
+  client_id: string;
   description: string;
-  createdAt: Date;
+  user_id: string;
+  created_at: string;
 }
 
 export interface ClientTab {

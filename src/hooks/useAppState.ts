@@ -3,9 +3,9 @@ import { Client, Entry, ClientTab } from '@/types';
 
 export function useAppState() {
   const [clients, setClients] = useState<Client[]>([
-    { id: '1', name: 'Acme Corp', createdAt: new Date() },
-    { id: '2', name: 'Tech Solutions', createdAt: new Date() },
-    { id: '3', name: 'Global Industries', createdAt: new Date() },
+    { id: '1', name: 'Acme Corp', user_id: '', created_at: new Date().toISOString() },
+    { id: '2', name: 'Tech Solutions', user_id: '', created_at: new Date().toISOString() },
+    { id: '3', name: 'Global Industries', user_id: '', created_at: new Date().toISOString() },
   ]);
 
   const [entries, setEntries] = useState<Entry[]>([]);
@@ -15,7 +15,8 @@ export function useAppState() {
     const newClient: Client = {
       id: crypto.randomUUID(),
       name,
-      createdAt: new Date(),
+      user_id: '',
+      created_at: new Date().toISOString(),
     };
     setClients(prev => [...prev, newClient]);
     return newClient;
@@ -36,24 +37,30 @@ export function useAppState() {
 
   const deleteClient = useCallback((id: string) => {
     setClients(prev => prev.filter(client => client.id !== id));
-    setEntries(prev => prev.filter(entry => entry.clientId !== id));
+    setEntries(prev => prev.filter(entry => entry.client_id !== id));
     setOpenClientTabs(prev => prev.filter(tab => tab.clientId !== id));
   }, []);
 
-  const addEntry = useCallback((clientId: string, description: string) => {
+  const addEntry = useCallback((clientId: string, description: string, cost: number = 0) => {
     const newEntry: Entry = {
       id: crypto.randomUUID(),
-      clientId,
+      client_id: clientId,
       description,
-      createdAt: new Date(),
+      cost,
+      user_id: '',
+      created_at: new Date().toISOString(),
     };
     setEntries(prev => [...prev, newEntry]);
     return newEntry;
   }, []);
 
+  const deleteEntry = useCallback((entryId: string) => {
+    setEntries(prev => prev.filter(entry => entry.id !== entryId));
+  }, []);
+
   const getClientEntries = useCallback(
     (clientId: string) => {
-      return entries.filter(entry => entry.clientId === clientId);
+      return entries.filter(entry => entry.client_id === clientId);
     },
     [entries]
   );
@@ -79,6 +86,7 @@ export function useAppState() {
     updateClient,
     deleteClient,
     addEntry,
+    deleteEntry,
     getClientEntries,
     openClientTab,
     closeClientTab,

@@ -270,6 +270,29 @@ export function useSupabaseClients() {
     [user, toast]
   );
 
+  const deleteEntry = useCallback(
+    async (entryId: string) => {
+      if (!user) return;
+
+      try {
+        const { error } = await supabase
+          .from('entries')
+          .delete()
+          .eq('id', entryId)
+          .eq('user_id', user.id);
+
+        if (error) throw error;
+      } catch (error: any) {
+        toast({
+          title: 'Errore',
+          description: 'Impossibile eliminare il record: ' + error.message,
+          variant: 'destructive',
+        });
+      }
+    },
+    [user, toast]
+  );
+
   const getClientEntries = useCallback(
     (clientId: string) => {
       return entries.filter((entry) => entry.client_id === clientId);
@@ -298,6 +321,7 @@ export function useSupabaseClients() {
     updateClient,
     deleteClient,
     addEntry,
+    deleteEntry,
     getClientEntries,
     openClientTab,
     closeClientTab,

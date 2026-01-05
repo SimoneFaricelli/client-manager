@@ -16,6 +16,7 @@ interface AppTabsProps {
   onAddClient: (name: string) => void;
   onUpdateClient: (id: string, name: string) => void;
   onDeleteClient: (id: string) => void;
+  onDeleteEntry: (entryId: string) => void;
   getClientEntries: (clientId: string) => Entry[];
   onOpenClientTab: (client: Client) => void;
   onCloseClientTab: (clientId: string) => void;
@@ -29,6 +30,7 @@ export function AppTabs({
   onAddClient,
   onUpdateClient,
   onDeleteClient,
+  onDeleteEntry,
   getClientEntries,
   onOpenClientTab,
   onCloseClientTab,
@@ -114,6 +116,7 @@ export function AppTabs({
               <ClientDetailTab
                 client={client}
                 entries={getClientEntries(tab.clientId)}
+                onDeleteEntry={onDeleteEntry}
               />
             </TabsContent>
           );

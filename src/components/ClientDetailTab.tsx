@@ -8,16 +8,17 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import { Button } from '@/components/ui/button';
-import { FileText, Download } from 'lucide-react';
+import { FileText, Download, Trash2 } from 'lucide-react';
 import * as XLSX from 'xlsx';
 import { toast } from 'sonner';
 
 interface ClientDetailTabProps {
   client: Client;
   entries: Entry[];
+  onDeleteEntry?: (entryId: string) => void;
 }
 
-export function ClientDetailTab({ client, entries }: ClientDetailTabProps) {
+export function ClientDetailTab({ client, entries, onDeleteEntry }: ClientDetailTabProps) {
   const handleExportToExcel = () => {
     try {
       // Prepara i dati per l'export
@@ -53,6 +54,13 @@ export function ClientDetailTab({ client, entries }: ClientDetailTabProps) {
     } catch (error) {
       console.error('Errore durante l\'export:', error);
       toast.error('Errore durante l\'export del file');
+    }
+  };
+
+  const handleDeleteEntry = (entryId: string) => {
+    if (onDeleteEntry) {
+      onDeleteEntry(entryId);
+      toast.success('Record eliminato');
     }
   };
 
@@ -100,11 +108,12 @@ export function ClientDetailTab({ client, entries }: ClientDetailTabProps) {
                 <TableHead className="w-[180px]">Data</TableHead>
                 <TableHead>Descrizione</TableHead>
                 <TableHead className="w-[120px] text-right">Costo</TableHead>
+                <TableHead className="w-[60px]"></TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {entries.map(entry => (
-                <TableRow key={entry.id}>
+                <TableRow key={entry.id} className="group">
                   <TableCell className="font-medium text-muted-foreground">
                     {new Date(entry.created_at).toLocaleDateString('it-IT', {
                       day: '2-digit',
@@ -116,6 +125,16 @@ export function ClientDetailTab({ client, entries }: ClientDetailTabProps) {
                   </TableCell>
                   <TableCell>{entry.description}</TableCell>
                   <TableCell className="text-right font-medium">€ {entry.cost.toFixed(2)}</TableCell>
+                  <TableCell>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="h-8 w-8 opacity-0 group-hover:opacity-100 transition-opacity text-destructive hover:text-destructive hover:bg-destructive/10"
+                      onClick={() => handleDeleteEntry(entry.id)}
+                    >
+                      <Trash2 className="h-4 w-4" />
+                    </Button>
+                  </TableCell>
                 </TableRow>
               ))}
             </TableBody>

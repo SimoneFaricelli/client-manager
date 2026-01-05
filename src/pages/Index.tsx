@@ -15,6 +15,7 @@ const Index = () => {
     updateClient,
     deleteClient,
     addEntry,
+    deleteEntry,
     getClientEntries,
     openClientTab,
     closeClientTab,
@@ -84,6 +85,7 @@ const Index = () => {
           onAddClient={addClient}
           onUpdateClient={updateClient}
           onDeleteClient={deleteClient}
+          onDeleteEntry={deleteEntry}
           getClientEntries={getClientEntries}
           onOpenClientTab={openClientTab}
           onCloseClientTab={closeClientTab}
